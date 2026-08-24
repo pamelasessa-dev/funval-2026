@@ -1,9 +1,9 @@
 import express, { type Request, type Response } from "express"; 
 import swaggerRouter from "./routes/swagger.router.js";
 import cors from "cors"
+import pool from "./config/db.js";
 
-const port = process.env.PORT; 
-
+const port = process.env.PORT || 3000;
 
 
 const app = express();
@@ -23,6 +23,19 @@ app.get("/", (req: Request, res: Response) => {
     });
 });
 
+app.get("/api/menu", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM menu_producto");
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error al intentar obtener el menú de productos:", error);
+
+    res.status(500).json({
+      error: "Error al obtener el menú de productos",
+    });
+  }
+});
 app.listen(port, () => {
     console.log(`URL: http://localhost:${port}`);
 });
