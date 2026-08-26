@@ -1,41 +1,28 @@
-import express, { type Request, type Response } from "express"; 
+import express, { type Request, type Response } from "express";
 import swaggerRouter from "./routes/swagger.router.js";
-import cors from "cors"
-import pool from "./config/db.js";
+import cors from "cors";
+import productRouter from "./routes/product.routes.js";
 
 const port = process.env.PORT || 3000;
 
-
 const app = express();
 
-// Middlewares 
+// Middlewares
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
-app.use("/api/docs", swaggerRouter) 
-
+app.use("/api/docs", swaggerRouter);
 
 app.get("/", (req: Request, res: Response) => {
-    /*#swagger.tags = ['Tests']*/
-    res.json({
-        status: "Server online",
-        version: "1.0.0"
-    });
+  /*#swagger.tags = ['Tests']*/
+  res.json({
+    status: "Server online",
+    version: "1.0.0",
+  });
 });
 
-app.get("/api/menu", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM menu_producto");
+app.use("/api", productRouter);
 
-    res.json(result.rows);
-  } catch (error) {
-    console.error("Error al intentar obtener el menú de productos:", error);
-
-    res.status(500).json({
-      error: "Error al obtener el menú de productos",
-    });
-  }
-});
 app.listen(port, () => {
-    console.log(`URL: http://localhost:${port}`);
+  console.log(`URL: http://localhost:${port}`);
 });
