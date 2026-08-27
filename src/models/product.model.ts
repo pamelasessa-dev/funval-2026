@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 
 // Obtener todos los productos
 export const getProducts = async () => {
-  const query = "SELECT * FROM menu_producto ORDER BY id_producto ASC;";
+  const query = "SELECT * FROM products ORDER BY id ASC;";
 
   const { rows } = await pool.query(query);
 
@@ -11,30 +11,34 @@ export const getProducts = async () => {
 
 // Obtener un producto por ID
 export const getProductById = async (id: number) => {
-  const query = "SELECT * FROM menu_producto WHERE id_producto = $1;";
+  const query = "SELECT * FROM products WHERE id = $1;";
+
   const { rows } = await pool.query(query, [id]);
+
   return rows[0] ?? null;
 };
 
 // Crear producto
 export const createProduct = async (data: {
-  nombre: string;
-  categoria: string;
-  precio: number;
-  disponible: boolean;
+  name: string;
+  description: string;
+  price: number;
+  cost?: number;
+  stock?: number;
 }) => {
   const query = `
-    INSERT INTO menu_producto 
-    (nombre, categoria, precio, disponible)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO products
+    (name, description, price, cost, stock)
+    VALUES ($1, $2, $3, $4, $5)
     RETURNING *;
   `;
 
   const { rows } = await pool.query(query, [
-    data.nombre,
-    data.categoria,
-    data.precio,
-    data.disponible,
+    data.name,
+    data.description,
+    data.price,
+    data.cost ?? 0,
+    data.stock ?? 0,
   ]);
 
   return rows[0];
@@ -44,28 +48,31 @@ export const createProduct = async (data: {
 export const updateProduct = async (
   id: number,
   data: {
-    nombre: string;
-    categoria: string;
-    precio: number;
-    disponible: boolean;
+    name: string;
+    description: string;
+    price: number;
+    cost?: number;
+    stock?: number;
   }
 ) => {
   const query = `
-    UPDATE menu_producto
+    UPDATE products
     SET
-      nombre = $1,
-      categoria = $2,
-      precio = $3,
-      disponible = $4
-    WHERE id_producto = $5
+      name = $1,
+      description = $2,
+      price = $3,
+      cost = $4,
+      stock = $5
+    WHERE id = $6
     RETURNING *;
   `;
 
   const { rows } = await pool.query(query, [
-    data.nombre,
-    data.categoria,
-    data.precio,
-    data.disponible,
+    data.name,
+    data.description,
+    data.price,
+    data.cost ?? 0,
+    data.stock ?? 0,
     id,
   ]);
 
@@ -75,8 +82,8 @@ export const updateProduct = async (
 // Eliminar producto
 export const deleteProduct = async (id: number) => {
   const query = `
-    DELETE FROM menu_producto
-    WHERE id_producto = $1
+    DELETE FROM products
+    WHERE id = $1
     RETURNING *;
   `;
 
