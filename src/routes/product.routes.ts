@@ -8,13 +8,15 @@ import {
   removeProduct,
 } from "../controllers/product.controller.js";
 
-const router: Router = Router() ;
+import { validateProduct } from "../middlewares/validate-product.js";
+
+const router: Router = Router();
 
 router.get("/", getMenu);
 
 router.get("/:id", getProduct);
 
-router.post("/", postProduct);
+router.post("/", validateProduct, postProduct);
 
 router.put("/:id", putProduct);
 
