@@ -21,6 +21,12 @@ export const getMenu = async (req: Request, res: Response) => {
 export const getProduct = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
+    if(isNaN(id)){
+      res.status(400).json({
+        error:"el id debe se un valor numérico",
+    });
+      return;
+    }
     const product = await getProductById(id);
     if (product === null) {
       res.status(404).json({
