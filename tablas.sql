@@ -6,6 +6,7 @@ CREATE TABLE products (
     cost NUMERIC(10, 2) DEFAULT 0 CHECK (cost >= 0),
     stock INTEGER DEFAULT 0 CHECK (stock >= 0)
 );
+
 CREATE TABLE customers (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -13,4 +14,3 @@ CREATE TABLE customers (
     phone VARCHAR(20),
     address VARCHAR(200)
 );
-
