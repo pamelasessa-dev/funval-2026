@@ -3,6 +3,8 @@ import swaggerRouter from "./routes/swagger.router.js";
 import cors from "cors";
 import productRouter from "./routes/product.routes.js";
 import { customerRouter } from "./routes/customer.routes.js";
+import { saleRouter } from "./routes/sale.routes.js";
+
 const port = process.env.PORT || 3000;
 
 const app = express();
@@ -23,7 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/products", productRouter);
 app.use("/api/customers",customerRouter);
-
+app.use("/api/sales", saleRouter);
 app.listen(port, () => {
   console.log(`URL: http://localhost:${port}`);
 });

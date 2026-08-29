@@ -9,7 +9,16 @@ import {
 
 export const getMenu = async (req: Request, res: Response) => {
   try {
-    const products = await getProducts();
+    const { maxPrice,page,limit } = req.query;
+    const maxPriceNumber = maxPrice !== undefined ? Number(maxPrice) : undefined;
+    const pageNumber = page !== undefined ? Number(page) : 1;
+    const limitNumber = limit !== undefined ? Number(limit) : 10;
+    const products = await getProducts(
+      maxPriceNumber,
+      pageNumber,
+      limitNumber
+    );
+
     res.json(products);
   } 
   catch (error) {
