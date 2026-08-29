@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "API de Estudiantes",
-    "description": "Documentación automática generada para el bootcamp",
+    "title": "API Rincón del Sabor",
+    "description": "API para gestionar productos, clientes y ventas",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
@@ -26,34 +26,95 @@
     },
     "/api/products/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Products"
+        ],
+        "summary": "Obtener todos los productos",
+        "description": "Obtiene la lista de productos disponibles, permitiendo aplicar filtros por precio y paginación.",
+        "parameters": [
+          {
+            "name": "maxPrice",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de productos obtenida correctamente"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Products"
+        ],
+        "summary": "Crear un producto",
+        "description": "Crea un nuevo producto en el sistema.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Hamburguesa clásica"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Hamburguesa con carne, queso y verduras"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 250
+                },
+                "cost": {
+                  "type": "number",
+                  "example": 120
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 10
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Producto creado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos del producto inválidos"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/api/products/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Products"
+        ],
+        "summary": "Obtener un producto por ID",
+        "description": "Obtiene la información de un producto específico mediante su identificador.",
         "parameters": [
           {
             "name": "id",
@@ -64,94 +125,174 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Producto encontrado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "El ID proporcionado no es válido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Producto no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Products"
+        ],
+        "summary": "Actualizar un producto",
+        "description": "Actualiza la información de un producto existente mediante su identificador.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Identificador del producto"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Hamburguesa especial"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Hamburguesa con carne, queso, bacon y verduras"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 300
+                },
+                "cost": {
+                  "type": "number",
+                  "example": 150
+                },
+                "stock": {
+                  "type": "number",
+                  "example": 15
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Producto actualizado correctamente"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Producto no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Products"
+        ],
+        "summary": "Eliminar un producto",
+        "description": "Elimina un producto existente mediante su identificador.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Identificador del producto"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Producto eliminado correctamente"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Producto no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/api/customers/": {
       "get": {
-        "description": "",
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Obtener todos los clientes",
+        "description": "Obtiene la lista completa de clientes registrados.",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Lista de clientes obtenida correctamente"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "post": {
-        "description": "",
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Crear un cliente",
+        "description": "Registra un nuevo cliente en el sistema.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Juan Pérez"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan@example.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "099123456"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Av. Principal 123"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Cliente creado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos del cliente inválidos"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }
     },
     "/api/customers/{id}": {
       "get": {
-        "description": "",
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Obtener un cliente por ID",
+        "description": "Obtiene la información de un cliente específico mediante su identificador.",
         "parameters": [
           {
             "name": "id",
@@ -162,46 +303,171 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente encontrado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "El ID proporcionado no es válido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cliente no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "put": {
-        "description": "",
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Actualizar un cliente",
+        "description": "Actualiza la información de un cliente existente mediante su identificador.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "Identificador del cliente"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Juan Pérez actualizado"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "juan.actualizado@example.com"
+                },
+                "phone": {
+                  "type": "string",
+                  "example": "099987654"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "Nueva dirección 456"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Cliente actualizado correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Datos del cliente inválidos"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Cliente no encontrado"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       },
       "delete": {
-        "description": "",
+        "tags": [
+          "Customers"
+        ],
+        "summary": "Eliminar un cliente",
+        "description": "Elimina un cliente existente mediante su identificador.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Identificador del cliente"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cliente eliminado correctamente"
+          },
+          "400": {
+            "description": "El ID proporcionado no es válido"
+          },
+          "404": {
+            "description": "Cliente no encontrado"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/sales/": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Obtener todas las ventas",
+        "description": "Obtiene la lista completa de ventas registradas incluyendo el nombre y los datos del cliente asociado mediante un INNER JOIN.",
+        "responses": {
+          "200": {
+            "description": "Lista de ventas obtenida correctamente"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Obtener una venta por ID",
+        "description": "Obtiene una venta específica mediante su identificador, incluyendo la información del cliente asociado.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "customer_id": {
+                  "example": "any"
+                },
+                "total": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Venta encontrada correctamente"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "El ID proporcionado no es válido"
+          },
+          "404": {
+            "description": "Venta no encontrada"
+          },
+          "500": {
+            "description": "Error interno del servidor"
+          }
+        }
+      }
+    },
+    "/api/sales/{id}": {
+      "get": {
+        "tags": [
+          "Sales"
+        ],
+        "summary": "Obtener una venta por ID",
+        "description": "Obtiene una venta específica mediante su identificador, incluyendo la información del cliente asociado.",
         "parameters": [
           {
             "name": "id",
@@ -212,16 +478,16 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Venta encontrada correctamente"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "El ID proporcionado no es válido"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Venta no encontrada"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Error interno del servidor"
           }
         }
       }

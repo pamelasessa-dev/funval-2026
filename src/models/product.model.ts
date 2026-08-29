@@ -1,11 +1,37 @@
 import pool from "../config/db.js";
 
-// Obtener todos los productos
-export const getProducts = async () => {
-  const query = "SELECT * FROM products ORDER BY id ASC;";
+// Obtener todos los productos con filtro opciomal en precio maximo y paginación
+export const getProducts = async (
+  maxPrice?: number,
+  page: number = 1,
+  limit:number = 10
+) => {
+  const offset = (page -1) * limit;
 
-  const { rows } = await pool.query(query);
+  if(maxPrice !== undefined){
+    const query = `SELECT * FROM products
+      WHERE price <= $1
+      ORDER BY id ASC
+      LIMIT $2 OFFSET $3
+    `;
+      
+  const {rows} = await pool.query(query,[
+  maxPrice,
+  limit,
+  offset,
+]);
+  
+return rows;
 
+}
+
+  const query = `
+  SELECT * FROM products 
+  ORDER BY id ASC
+  LIMIT $1 OFFSET $2;
+  `;
+
+  const { rows } = await pool.query(query, [limit, offset]);
   return rows;
 };
 

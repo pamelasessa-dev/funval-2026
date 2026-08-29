@@ -14,3 +14,10 @@ CREATE TABLE customers (
     phone VARCHAR(20),
     address VARCHAR(200)
 );
+
+CREATE TABLE sales (
+    id SERIAL PRIMARY KEY,
+    customer_id INTEGER NOT NULL REFERENCES customers(id),
+    total NUMERIC(10, 2) NOT NULL CHECK (total >= 0)
+);
+
